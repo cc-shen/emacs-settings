@@ -67,3 +67,6 @@
     (quit nil)))
 
 (setq electric-indent-mode nil)
+
+(setq-default show-trailing-whitespace t)
+(setq require-final-newline t)
