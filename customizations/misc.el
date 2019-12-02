@@ -10,3 +10,6 @@
 
 ;; Go straight to scratch buffer on startup
 (setq inhibit-startup-message t)
+
+(xterm-mouse-mode t)
+(mouse-wheel-mode t)

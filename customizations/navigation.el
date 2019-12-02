@@ -60,3 +60,14 @@
 
 ;; projectile everywhere!
 (projectile-global-mode)
+(setq projectile-enable-caching nil)
+
+
+;; Company mode!
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq-default company-lighter " cmp")
+(define-key company-active-map
+  [tab] 'company-complete)
+(define-key company-active-map
+  (kbd "TAB") 'company-complete)
