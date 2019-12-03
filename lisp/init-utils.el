@@ -293,4 +293,7 @@ you can '(setq my-mplayer-extra-opts \"-ao alsa -vo vdpau\")'.")
 ;; reply y/n instead of yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; no lockfiles
+(setq create-lockfiles nil)
+
 (provide 'init-utils)

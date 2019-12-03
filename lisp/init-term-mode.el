@@ -10,8 +10,8 @@
     ad-do-it))
 (ad-activate 'term-sentinel)
 
-;; always use bash
-(defvar my-term-program "/bin/bash")
+;; always use zsh
+(defvar my-term-program "/bin/zsh")
 (defadvice ansi-term (before force-bash)
   (interactive (list my-term-program)))
 (ad-activate 'ansi-term)
