@@ -1,5 +1,4 @@
 # emacs-settings
 
-Personal settings after having it set up with the help from the [Brave Clojure tutorial](http://www.braveclojure.com/basic-emacs/).
+Adapted from https://github.com/redguardtoo/emacs.d and https://github.com/flyingmachine/emacs-for-clojure/
 
-Still work in progress as I learn to use emacs

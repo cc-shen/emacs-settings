@@ -1,12 +1,17 @@
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-(setq wg-use-default-session-file nil)
-;; don't open last workgroup automatically in `wg-open-session',
-;; I only want to check available workgroups! Nothing more.
-(setq wg-load-last-workgroup nil)
-(setq wg-open-this-wg nil)
+;; What to do on Emacs exit / workgroups-mode exit?
+(setq wg-emacs-exit-save-behavior           'save)      ; Options: 'save 'ask nil
+(setq wg-workgroups-mode-exit-save-behavior 'save)      ; Options: 'save 'ask nil
 
-;(workgroups-mode 1) ; put this one at the bottom of .emacs
+;; Mode Line changes
+;; Display workgroups in Mode Line?
+(setq wg-mode-line-display-on t)          ; Default: (not (featurep 'powerline))
+(setq wg-flag-modified t)                 ; Display modified flags as well
+(setq wg-mode-line-decor-left-brace "["
+      wg-mode-line-decor-right-brace "]"  ; how to surround it
+      wg-mode-line-decor-divider ":")
+
 ;; by default, the sessions are saved in "~/.emacs_workgroups"
 (defun my-wg-switch-workgroup ()
   (interactive)
