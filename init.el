@@ -108,7 +108,6 @@
   (require-init 'init-ruby-mode t)
   (require-init 'init-lisp t)
   (require-init 'init-clojure t)
-  (require-init 'init-clojure-cider t)
   (require-init 'init-elisp t)
   (require-init 'init-yasnippet t)
   (require-init 'init-cc-mode t)
