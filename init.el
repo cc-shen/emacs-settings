@@ -158,7 +158,7 @@
   (unless (boundp 'startup-now)
     ;; my personal setup, other major-mode specific setup need it.
     ;; It's dependent on "~/.emacs.d/site-lisp/*.el"
-    (load (expand-file-name "~/.custom.el") t nil)
+    (load (expand-file-name "~/.emacs.d/personal.el") t nil)
 
     ;; @see https://www.reddit.com/r/emacs/comments/4q4ixw/how_to_forbid_emacs_to_touch_configuration_files/
     ;; See `custom-file' for details.
@@ -169,13 +169,6 @@
 (when (require 'time-date nil t)
   (message "Emacs startup time: %d seconds."
            (time-to-seconds (time-since emacs-load-start-time))))
-
-(load-theme 'sanityinc-tomorrow-night t)
-(setq ensure-final-newline t)
-(turnon-keyfreq-mode)
-(show-paren-mode 1)
-(global-hl-line-mode 1)
-(workgroups-mode 1)
 
 ;;; Local Variables:
 ;;; no-byte-compile: t
