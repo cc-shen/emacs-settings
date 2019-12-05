@@ -1,6 +1,8 @@
 ;; As suggested in the init.el
 ;;   any personal preferences should be elsewhere (i.e. here)
 
+(setq system-time-locale "C")
+
 (load-theme 'zenburn t)
 (setq ensure-final-newline t)
 (show-paren-mode 1)
