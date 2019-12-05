@@ -364,6 +364,7 @@ locate PACKAGE."
 
 (require-package 'clojure-mode)
 (require-package 'clojure-mode-extra-font-locking)
+(require-package 'cider)
 ;; {{ Fixed expiring GNU ELPA keys
 ;; GNU ELPA GPG key will expire on Sep-2019. So we need install this package to
 ;; update key or else users can't install packages from GNU ELPA.

@@ -14,11 +14,11 @@
      (push "TAGS" counsel-etags-ignore-filenames)
      (push "*.json" counsel-etags-ignore-filenames)))
 
-(setq tags-revert-without-query t)
-(setq large-file-warning-threshold nil)
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (add-hook 'after-save-hook
-                      'counsel-etags-virtual-update-tags 'append 'local)))
+;; (setq tags-revert-without-query t)
+;; (setq large-file-warning-threshold nil)
+;; (add-hook 'prog-mode-hook
+;;           (lambda ()
+;;             (add-hook 'after-save-hook
+;;                       'counsel-etags-virtual-update-tags 'append 'local)))
 
 (workgroups-mode 1)
