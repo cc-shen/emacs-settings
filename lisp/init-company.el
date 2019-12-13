@@ -17,6 +17,7 @@
 
      (add-to-list 'company-backends 'company-cmake)
      (add-to-list 'company-backends 'company-c-headers)
+     (add-to-list 'company-backends 'company-tabnine)
      ;; can't work with TRAMP
      (setq company-backends (delete 'company-ropemacs company-backends))
 
@@ -35,7 +36,7 @@
            company-dabbrev-ignore-case nil
            ;; press M-number to choose candidate
            company-show-numbers t
-           company-idle-delay 0.2
+           company-idle-delay 0
            company-clang-insert-arguments nil
            company-require-match nil
            company-etags-ignore-case t

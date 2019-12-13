@@ -110,7 +110,8 @@
     workgroups2
     zoutline
     company-c-headers
-    company-statistics)
+    company-statistics
+    company-tabnine)
   "Packages to install from melpa-unstable.")
 
 (defvar melpa-stable-banned-packages nil
@@ -312,6 +313,7 @@ locate PACKAGE."
 (require-package 'company)
 (require-package 'company-c-headers)
 (require-package 'company-statistics)
+(require-package 'company-tabnine)
 (require-package 'elpy)
 (require-package 'legalese)
 (require-package 'simple-httpd)
