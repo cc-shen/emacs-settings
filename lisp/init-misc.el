@@ -872,6 +872,12 @@ If no region is selected. You will be asked to use `kill-ring' or clipboard inst
 
 (eval-after-load 'compile
   '(progn
+     (defadvice compile (around compile-hack activate)
+       (cond
+        ((member major-mode '(octave-mode))
+         (octave-send-buffer))
+        (t
+         ad-do-it)))
      (add-to-list 'compilation-error-regexp-alist-alist
                   (list 'mocha "at [^()]+ (\\([^:]+\\):\\([^:]+\\):\\([^:]+\\))" 1 2 3))
      (add-to-list 'compilation-error-regexp-alist 'mocha)))
@@ -949,7 +955,7 @@ When join-dark-side is t, pick up dark theme only."
                               emms-player-mplayer
                               emms-player-mpg321
                               emms-player-ogg123
-                              lemms-player-vlc
+                              emms-player-vlc
                               emms-player-vlc-playlist))))
 ;; }}
 
