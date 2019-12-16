@@ -4,7 +4,7 @@
 (setq system-time-locale "C")
 
 (load-theme 'zenburn t)
-(setq ensure-final-newline t)
+(setq require-final-newline t)
 (show-paren-mode 1)
 (global-hl-line-mode 1)
 (turnon-keyfreq-mode)
