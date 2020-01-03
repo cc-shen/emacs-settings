@@ -354,65 +354,37 @@ locate PACKAGE."
   ;; org => ppt, org v8.3 is required (Emacs 25 uses org v8.2)
   (require-package 'org-re-reveal))
 
+(defun my-install-popular-themes (popular-themes)
+  "Install POPULAR-THEMES from melpa."
+  (dolist (theme popular-themes)
+    (require-package theme)))
+
 (when *emacs25*
   (require-package 'magit) ; Magit 2.12 is the last feature release to support Emacs 24.4.
-  ;; Most popular thems from https://emacsthemes.com/popular/index.html
-  (require-package 'zenburn-theme)
-  (require-package 'solarized-theme)
-  (require-package 'spacemacs-theme)
-  (require-package 'color-theme-sanityinc-tomorrow)
-  (require-package 'monokai-theme)
-  (require-package 'leuven-theme)
-  (require-package 'color-theme-sanityinc-solarized)
-  (require-package 'material-theme)
-  (require-package 'gruvbox-theme)
-  (require-package 'moe-theme)
-  (require-package 'cyberpunk-theme) ; recommended
-  (require-package 'ample-theme)
-  (require-package 'dracula-theme) ; recommended
-  (require-package 'alect-themes)
-  (require-package 'sublime-themes)
-  (require-package 'darktooth-theme)
-  (require-package 'anti-zenburn-theme)
-  (require-package 'gotham-theme)
-  (require-package 'apropospriate-theme)
-  (require-package 'tao-theme)
-  (require-package 'ujelly-theme)
-  (require-package 'molokai-theme) ; recommended
-  (require-package 'grandshell-theme)
-  (require-package 'tangotango-theme)
-  (require-package 'afternoon-theme)
-  (require-package 'gruber-darker-theme)
-  (require-package 'ample-zen-theme)
-  (require-package 'doom-themes)
-  (require-package 'noctilux-theme)
-  (require-package 'flatland-theme)
-  (require-package 'organic-green-theme)
-  (require-package 'inkpot-theme)
-  (require-package 'flatui-theme)
-  (require-package 'hc-zenburn-theme)
-  (require-package 'clues-theme)
-  (require-package 'darkburn-theme) ; recommended
-  (require-package 'soothe-theme)
-  (require-package 'subatomic-theme)
-  (require-package 'naquadah-theme)
-  (require-package 'seti-theme)
-  (require-package 'spacegray-theme)
-  (require-package 'jazz-theme)
-  (require-package 'dakrone-theme)
-  (require-package 'espresso-theme)
-  (require-package 'phoenix-dark-pink-theme)
-  (require-package 'tango-plus-theme)
-  (require-package 'busybee-theme)
-  (require-package 'twilight-theme)
-  (require-package 'minimal-theme)
-  (require-package 'bubbleberry-theme)
-  (require-package 'cherry-blossom-theme)
-  (require-package 'heroku-theme)
-  (require-package 'hemisu-theme)
-  (require-package 'badger-theme)
-  (require-package 'distinguished-theme)
-  (require-package 'challenger-deep-theme))
+  (my-install-popular-themes
+   '(
+     ample-zen-theme
+     anti-zenburn-theme
+     color-theme-modern
+     color-theme-sanityinc-solarized
+     color-theme-sanityinc-tomorrow
+     darkburn-theme
+     darkokai-theme
+     hc-zenburn-theme
+     molokai-theme
+     monokai-alt-theme
+     monokai-theme
+     org-beautify-theme
+     professional-theme
+     seti-theme
+     smyx-theme
+     solarized-theme
+     spacegray-theme
+     spacemacs-theme
+     sublime-themes
+     zen-and-art-theme
+     zenburn-theme
+     )))
 ;; }}
 
 ;; kill buffer without my confirmation
