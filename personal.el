@@ -3,6 +3,8 @@
 
 (setq system-time-locale "C")
 
+(setq create-lockfiles nil)
+
 (load-theme 'zenburn t)
 (setq require-final-newline t)
 (show-paren-mode 1)
