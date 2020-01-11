@@ -159,6 +159,8 @@
     ;; my personal setup, other major-mode specific setup need it.
     ;; It's dependent on "~/.emacs.d/site-lisp/*.el"
     (load (expand-file-name "~/.emacs.d/personal.el") t nil)
+    ;; This isn't checked in because it is environment dependent
+    (load (expand-file-name "~/.custom.el") t nil)
 
     ;; @see https://www.reddit.com/r/emacs/comments/4q4ixw/how_to_forbid_emacs_to_touch_configuration_files/
     ;; See `custom-file' for details.

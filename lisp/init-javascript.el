@@ -303,7 +303,8 @@ Merge RLT and EXTRA-RLT, items in RLT has *higher* priority."
   ;; JSX
   (add-auto-mode 'rjsx-mode
                  "\\.jsx\\'"
-                 "components\\/.*\\.js\\'")
+                 "components\\/.*\\.js\\'"
+                 "assets\\/.*\\.js\\'")
   ;; mock file
   (add-auto-mode 'js-mode
                  "\\.mock.js\\'")
