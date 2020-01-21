@@ -47,9 +47,35 @@
     ;; }}
     wgrep
     ;; {{ themes in melpa unstable
+    ample-theme
+    molokai-theme
+    spacemacs-theme
+    leuven-theme
     sublime-themes
+    tangotango-theme
     darkburn-theme
+    ujelly-theme
+    afternoon-theme
+    organic-green-theme
+    inkpot-theme
+    flatui-theme
     hc-zenburn-theme
+    naquadah-theme
+    seti-theme
+    spacegray-theme
+    jazz-theme
+    espresso-theme
+    phoenix-dark-pink-theme
+    tango-plus-theme
+    twilight-theme
+    minimal-theme
+    noctilux-theme
+    soothe-theme
+    heroku-theme
+    hemisu-theme
+    badger-theme
+    distinguished-theme
+    tao-theme
     ;; }}
     slime
     groovy-mode
@@ -195,18 +221,6 @@ PACKAGE is a symbol, VERSION is a vector as produced by `version-to-list', and
     (package-refresh-contents)
     (require-package package min-version t))))
 
-(defun maybe-require-package (package &optional min-version no-refresh)
-  "Try to install PACKAGE, and return non-nil if successful.
-In the event of failure, return nil and print a warning message.
-Optionally require MIN-VERSION.  If NO-REFRESH is non-nil, the
-available package lists will not be re-downloaded in order to
-locate PACKAGE."
-  (condition-case err
-      (require-package package min-version no-refresh)
-    (error
-     (message "Couldn't install optional package `%s': %S" package err)
-     nil)))
-
 ;;------------------------------------------------------------------------------
 ;; Fire up package.el and ensure the following packages are installed.
 ;;------------------------------------------------------------------------------
@@ -289,6 +303,7 @@ locate PACKAGE."
 (require-package 'company-c-headers)
 (require-package 'company-statistics)
 (require-package 'company-tabnine)
+(require-package 'lsp-mode)
 (require-package 'elpy)
 (require-package 'legalese)
 (require-package 'simple-httpd)
@@ -339,9 +354,6 @@ locate PACKAGE."
 (require-package 'langtool) ; check grammer
 (require-package 'typescript-mode)
 
-(require-package 'clojure-mode)
-(require-package 'clojure-mode-extra-font-locking)
-(require-package 'cider)
 ;; {{ Fixed expiring GNU ELPA keys
 ;; GNU ELPA GPG key will expire on Sep-2019. So we need install this package to
 ;; update key or else users can't install packages from GNU ELPA.
@@ -361,29 +373,109 @@ locate PACKAGE."
 
 (when *emacs25*
   (require-package 'magit) ; Magit 2.12 is the last feature release to support Emacs 24.4.
+  ;; most popular 100 themes
   (my-install-popular-themes
    '(
+     afternoon-theme
+     alect-themes
+     ample-theme
      ample-zen-theme
      anti-zenburn-theme
-     color-theme-modern
+     apropospriate-theme
+     atom-one-dark-theme
+     badwolf-theme
+     base16-theme
+     birds-of-paradise-plus-theme
+     bubbleberry-theme
+     busybee-theme
+     cherry-blossom-theme
+     clues-theme
      color-theme-sanityinc-solarized
      color-theme-sanityinc-tomorrow
+     cyberpunk-theme
+     dakrone-theme
      darkburn-theme
+     darkmine-theme
      darkokai-theme
+     darktooth-theme
+     django-theme
+     doom-themes
+     dracula-theme
+     espresso-theme
+     exotica-theme
+     eziam-theme
+     farmhouse-theme
+     flatland-theme
+     flatui-theme
+     gandalf-theme
+     gotham-theme
+     grandshell-theme
+     gruber-darker-theme
+     gruvbox-theme
      hc-zenburn-theme
+     hemisu-theme
+     heroku-theme
+     inkpot-theme
+     ir-black-theme
+     jazz-theme
+     jbeans-theme
+     kaolin-themes
+     leuven-theme
+     light-soap-theme
+     lush-theme
+     madhat2r-theme
+     majapahit-theme
+     material-theme
+     minimal-theme
+     moe-theme
      molokai-theme
-     monokai-alt-theme
+     monochrome-theme
      monokai-theme
-     org-beautify-theme
+     mustang-theme
+     naquadah-theme
+     noctilux-theme
+     obsidian-theme
+     occidental-theme
+     oldlace-theme
+     omtose-phellack-theme
+     organic-green-theme
+     phoenix-dark-mono-theme
+     phoenix-dark-pink-theme
+     planet-theme
      professional-theme
+     purple-haze-theme
+     railscasts-theme
+     rebecca-theme
+     reverse-theme
      seti-theme
      smyx-theme
+     soft-charcoal-theme
+     soft-morning-theme
+     soft-stone-theme
      solarized-theme
+     soothe-theme
      spacegray-theme
      spacemacs-theme
+     subatomic-theme
+     subatomic256-theme
      sublime-themes
+     sunny-day-theme
+     tango-2-theme
+     tango-plus-theme
+     tangotango-theme
+     tao-theme
+     toxi-theme
+     twilight-anti-bright-theme
+     twilight-bright-theme
+     twilight-theme
+     ujelly-theme
+     underwater-theme
+     white-sand-theme
      zen-and-art-theme
      zenburn-theme
+     atom-dark-theme
+     nord-theme
+     zerodark-theme
      )))
 ;; }}
 
