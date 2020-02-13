@@ -108,8 +108,7 @@
     workgroups2
     zoutline
     company-c-headers
-    company-statistics
-    company-tabnine)
+    company-statistics)
   "Packages to install from melpa-unstable.")
 
 (defvar melpa-stable-banned-packages nil
@@ -299,7 +298,6 @@ PACKAGE is a symbol, VERSION is a vector as produced by `version-to-list', and
 (require-package 'company)
 (require-package 'company-c-headers)
 (require-package 'company-statistics)
-(require-package 'company-tabnine)
 (require-package 'lsp-mode)
 (require-package 'elpy)
 (require-package 'legalese)

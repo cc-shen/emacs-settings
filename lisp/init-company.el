@@ -16,7 +16,6 @@
      (company-statistics-mode)
      (push 'company-cmake company-backends)
      (push 'company-c-headers company-backends)
-     (push 'company-tabnine company-backends)
      ;; can't work with TRAMP
      (setq company-backends (delete 'company-ropemacs company-backends))
 
