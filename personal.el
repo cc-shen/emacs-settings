@@ -25,4 +25,6 @@
             (add-hook 'after-save-hook
                       'counsel-etags-virtual-update-tags 'append 'local)))
 
+(electric-indent-mode -1)
+
 (workgroups-mode 1)
