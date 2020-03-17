@@ -5,7 +5,7 @@
 
 (setq create-lockfiles nil)
 
-(load-theme 'monokai t)
+(load-theme 'zenburn t)
 (setq require-final-newline t)
 (show-paren-mode 1)
 (global-hl-line-mode 1)
