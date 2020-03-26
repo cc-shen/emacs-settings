@@ -26,5 +26,5 @@
                       'counsel-etags-virtual-update-tags 'append 'local)))
 
 (electric-indent-mode -1)
-
+(xterm-mouse-mode 1)
 (workgroups-mode 1)
