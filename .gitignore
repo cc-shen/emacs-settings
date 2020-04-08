@@ -68,3 +68,5 @@ nov-places
 transient/
 cider-history
 .vscode/
+elpy/
+.lsp-session-*

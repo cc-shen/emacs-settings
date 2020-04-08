@@ -58,14 +58,17 @@
 
 ;; ffip settings
 (eval-after-load 'find-file-in-project
+  '(require 'find-file-in-project)
   '(progn
-     (require 'find-file-in-project)
+     ;; Add to patterns as needed
+     (setq-local ffip-patterns '("*.html" "*.js" "*.css" "*.java" "*.yaml" "*.jsx" "*.py" "*.el" "*.clj" "*.json"))
      (add-to-list 'ffip-ignore-filename "*.egg-info")
      (add-to-list 'ffip-ignore-filename "*._*")
      (add-to-list 'ffip-prune-patterns "*/docker-venv")
      (add-to-list 'ffip-prune-patterns "*/venv")
      (add-to-list 'ffip-prune-patterns "*/virtualrun_venv")
-     (add-to-list 'ffip-prune-patterns "*/.*_playground")))
+     (add-to-list 'ffip-prune-patterns "*/.*_playground")
+     (add-to-list 'ffip-prune-patterns "*/.mypy_cache")))
 
 (electric-indent-mode -1)
 (xterm-mouse-mode 1)
