@@ -57,18 +57,34 @@
          ad-do-it))))
 
 ;; ffip settings
-(eval-after-load 'find-file-in-project
-  '(require 'find-file-in-project)
-  '(progn
-     ;; Add to patterns as needed
-     (setq-local ffip-patterns '("*.html" "*.js" "*.css" "*.java" "*.yaml" "*.jsx" "*.py" "*.el" "*.clj" "*.json"))
-     (add-to-list 'ffip-ignore-filename "*.egg-info")
-     (add-to-list 'ffip-ignore-filename "*._*")
-     (add-to-list 'ffip-prune-patterns "*/docker-venv")
-     (add-to-list 'ffip-prune-patterns "*/venv")
-     (add-to-list 'ffip-prune-patterns "*/virtualrun_venv")
-     (add-to-list 'ffip-prune-patterns "*/.*_playground")
-     (add-to-list 'ffip-prune-patterns "*/.mypy_cache")))
+(defun setup-ffip-environment ()
+  (interactive)
+  (setq ffip-use-rust-fd t)
+  (setq-local ffip-patterns '(
+                              ;; Web
+                              "*.html"
+                              "*.js"
+                              "*.jsx"
+                              "*.css"
+                              "*.scss"
+                              ;; Other
+                              "*.java"
+                              "*.py"
+                              ;; Lisp Clojure
+                              "*.el"
+                              "*.clj"
+                              ;; Config/Document files
+                              "*.yaml"
+                              "*.json"
+                              "*.md"))
+  (add-to-list 'ffip-ignore-filename "*.egg-info")
+  (add-to-list 'ffip-ignore-filename "*._*")
+  (add-to-list 'ffip-prune-patterns "*/docker-venv")
+  (add-to-list 'ffip-prune-patterns "*/venv")
+  (add-to-list 'ffip-prune-patterns "*/virtualrun_venv")
+  (add-to-list 'ffip-prune-patterns "*/.*_playground")
+  (add-to-list 'ffip-prune-patterns "*/.mypy_cache"))
+(add-hook 'prog-mode-hook 'setup-ffip-environment)
 
 (electric-indent-mode -1)
 (xterm-mouse-mode 1)
