@@ -59,13 +59,13 @@
 ;; ffip settings
 (eval-after-load 'find-file-in-project
   '(progn
+     (require 'find-file-in-project)
      (add-to-list 'ffip-ignore-filename "*.egg-info")
      (add-to-list 'ffip-ignore-filename "*._*")
      (add-to-list 'ffip-prune-patterns "*/docker-venv")
      (add-to-list 'ffip-prune-patterns "*/venv")
      (add-to-list 'ffip-prune-patterns "*/virtualrun_venv")
      (add-to-list 'ffip-prune-patterns "*/.*_playground")))
-
 
 (electric-indent-mode -1)
 (xterm-mouse-mode 1)
