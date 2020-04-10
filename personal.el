@@ -58,6 +58,7 @@
 ;; ffip settings
 (defun setup-ffip-environment ()
   (interactive)
+  (require 'find-file-in-project)
   (setq-local ffip-patterns '(
                               ;; Web
                               "*.html"
