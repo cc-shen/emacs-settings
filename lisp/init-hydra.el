@@ -6,30 +6,32 @@
 ;; use similar key bindings as init-evil.el
 (defhydra hydra-launcher (:color blue)
   "
-^Misc^                    ^Audio^               ^Move^                          ^Pomodoro^
-----------------------------------------------------------------------------------------------
+^Misc^                     ^Audio^               ^Move^                          ^Pomodoro^
+-----------------------------------------------------------------------------------------------
 [_ss_] Save workgroup     [_R_] Emms Random     [_sa_] Backward Sentence (M-a)  [_ss_] Start
 [_ll_] Load workgroup     [_n_] Emms Next       [_se_] Forward Sentence (M-e)   [_st_] Stop
 [_B_] New bookmark        [_p_] Emms Previous   [_la_] Backward Up List         [_sr_] Resume
 [_m_] Goto bookmark       [_P_] Emms Pause      [_le_] Forward List             [_sp_] Pause
 [_v_] Show/Hide undo      [_O_] Emms Open       [_pa_] Backward Paragraph (M-{)
 [_b_] Switch Gnus buffer  [_L_] Emms Playlist   [_pe_] Forward Paragraph (M-})
-[_f_] Recent file         [_w_] Pronounce word
-[_e_] Erase buffer
+[_e_] Erase buffer        [_w_] Pronounce word
+[_r_] Erase this buffer   [_E_] Typewriter on
+[_f_] Recent file         [_V_] old typewriter
 [_d_] Recent directory
-[_h_] Dired CMD history
-[_E_] Enable typewriter
-[_V_] Vintage typewriter
+[_hr_] Dired CMD history
+[_hh_] Random theme
 [_q_] Quit
 "
-  ("h" my-dired-redo-from-commands-history)
+  ("hr" my-dired-redo-from-commands-history)
   ("B" bookmark-set)
   ("m" counsel-bookmark-goto)
   ("f" my-counsel-recentf)
   ("d" counsel-recent-directory)
+  ("hh" random-healthy-color-theme)
   ("ss" wg-create-workgroup)
   ("ll" my-wg-switch-workgroup)
-  ("e" erase-visible-buffer)
+  ("e" my-erase-visible-buffer)
+  ("r" my-erase-current-buffer)
   ("E" toggle-typewriter)
   ("V" twm/toggle-sound-style)
   ("v" undo-tree-visualize)
@@ -401,22 +403,22 @@ _SPC_ cancel _o_nly this     _d_elete
                      :color blue)
 "
 Git:
-[_dd_] Diff         [_i_] Gist selected
+[_dd_] Diff         [_ri_] Rebase closest
 [_dc_] Diff staged  [_s_] Show commit
-[_dr_] Diff range   [_r_] Reset gutter
-[_au_] Add modified [_h_] Gutter => HEAD
+[_dr_] Diff range   [_rr_] Reset gutter
+[_au_] Add modified [_rh_] Gutter => HEAD
 [_cc_] Commit       [_l_] Log selected/file
 [_ca_] Amend        [_b_] Branches
 [_ja_] Amend silent [_k_] Git commit link
 [_tt_] Stash        [_Q_] Quit gutter
 [_ta_] Apply Stash
 "
-  ("i" gist-region)
-  ("r" git-gutter-reset-to-default)
+  ("ri" my-git-rebase-interactive)
+  ("rr" git-gutter-reset-to-default)
+  ("rh" git-gutter-reset-to-head-parent)
   ("s" my-git-show-commit)
   ("l" magit-log-buffer-file)
   ("b" magit-show-refs-popup)
-  ("h" git-gutter-reset-to-head-parent)
   ("k" git-link)
   ("g" magit-status)
   ("ta" magit-stash-apply)
