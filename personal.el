@@ -25,7 +25,7 @@
             (add-hook 'after-save-hook
                       'counsel-etags-virtual-update-tags 'append 'local)))
 
-;; lsp-mode settings 
+;; lsp-mode settings
 (with-eval-after-load "lsp-mode"
   ;; enable log only for debug
   (setq lsp-log-io nil)
@@ -85,6 +85,10 @@
   (add-to-list 'ffip-prune-patterns "*/.mypy_cache"))
 (add-hook 'prog-mode-hook 'setup-ffip-environment)
 
+(require 'mouse)
+(xterm-mouse-mode t)
+(defun track-mouse (e))
+(setq mouse-sel-mode t)
+
 (electric-indent-mode -1)
-(xterm-mouse-mode 1)
 (workgroups-mode 1)
