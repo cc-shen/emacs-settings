@@ -18,11 +18,12 @@
     bbdb
     native-complete
     company-native-complete
+    flymake-shellcheck ; check shell script
     js2-mode ; need new features
     git-timemachine ; stable version is broken when git rename file
     evil-textobj-syntax
     command-log-mode
-    lsp-mode ; stable version has performance issue
+    ;; lsp-mode ; stable version has performance issue, but unstable version sends too many warnings
     edit-server ; use Emacs to edit textarea in browser, need browser addon
     vimrc-mode
     rjsx-mode ; fixed the indent issue in jsx
@@ -154,7 +155,7 @@ You still need modify `package-archives' in \"init-elpa.el\" to PERMANENTLY use 
           ("melpa-stable" . "https://mirrors.163.com/elpa/melpa-stable/"))))
 
 ;; Un-comment below line if you follow "Install stable version in easiest way"
-;; (setq package-archives '(("localelpa" . "~/.emacs.d/localelpa/") ("myelpa" . "~/projs/myelpa/")))
+;; (setq package-archives '(("localelpa" . "~/.emacs.d/localelpa/") ("myelpa" . "~/myelpa/")))
 
 ;;--------------------------------------------------------------------------
 ;; Internal implementation, newbies should NOT touch code below this line!
@@ -263,7 +264,6 @@ PACKAGE is a symbol, VERSION is a vector as produced by `version-to-list', and
 (require-package 'dsvn)
 (require-package 'git-timemachine)
 (require-package 'exec-path-from-shell)
-(require-package 'flymake-jslint)
 (require-package 'ivy)
 (require-package 'swiper)
 (require-package 'counsel) ; counsel => swiper => ivy
@@ -362,6 +362,7 @@ PACKAGE is a symbol, VERSION is a vector as produced by `version-to-list', and
 ;; }}
 
 (when *emacs26*
+  (require-package 'flymake-shellcheck)
   ;; org => ppt, org v8.3 is required (Emacs 25 uses org v8.2)
   (require-package 'org-re-reveal))
 

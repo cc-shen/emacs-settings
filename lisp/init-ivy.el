@@ -2,7 +2,7 @@
 
 (ivy-mode 1) ; it enables ivy UI for `kill-buffer'
 
-(with-eval-after-load "counsel"
+(with-eval-after-load 'counsel
   ;; automatically pick up cygwin cli tools for counsel
   (cond
    ((executable-find "rg")
@@ -193,7 +193,7 @@ If N is nil, use `ivy-mode' to browse `kill-ring'."
               :keymap ivy-switch-buffer-map
               :caller 'ivy-switch-buffer)))
 
-(with-eval-after-load "ivy"
+(with-eval-after-load 'ivy
   ;; work around ivy issue.
   ;; @see https://github.com/abo-abo/swiper/issues/828
   (setq ivy-display-style 'fancy))
@@ -279,12 +279,14 @@ If N is nil, use `ivy-mode' to browse `kill-ring'."
   (interactive)
   (cond
    ((my-use-tags-as-imenu-function-p)
+    ;; see code of `my-use-tags-as-imenu-function-p'. Currently we only use ctags for imenu
+    ;; in typescript because `lsp-mode' is too damn slow
     (let* ((imenu-create-index-function 'counsel-etags-imenu-default-create-index-function))
       (my-counsel-imenu)))
    (t
     (my-counsel-imenu))))
 
-(with-eval-after-load "ivy"
+(with-eval-after-load 'ivy
   ;; better performance on everything (especially windows), ivy-0.10.0 required
   ;; @see https://github.com/abo-abo/swiper/issues/1218
   (setq ivy-dynamic-exhibit-delay-ms 250)

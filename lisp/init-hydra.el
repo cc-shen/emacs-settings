@@ -61,7 +61,7 @@
   (local-set-key (kbd "C-c C-y") 'hydra-launcher/body))
 (add-hook 'org-mode-hook 'org-mode-hook-hydra-setup)
 
-(with-eval-after-load "find-file-in-project"
+(with-eval-after-load 'find-file-in-project
   (defhydra hydra-ffip-diff-group (:color blue)
     "
 [_k_] Previous hunk
@@ -79,7 +79,7 @@
 (add-hook 'ffip-diff-mode-hook 'ffip-diff-mode-hook-hydra-setup)
 
 ;; gnus-summary-mode
-(with-eval-after-load "gnus-sum"
+(with-eval-after-load 'gnus-sum
   (defhydra hydra-gnus-summary (:color blue)
     "
 [_F_] Forward (C-c C-f)             [_s_] Show thread
@@ -112,7 +112,7 @@
   (define-key gnus-summary-mode-map "y" 'hydra-gnus-summary/body))
 
 ;; gnus-article-mode
-(with-eval-after-load "gnus-art"
+(with-eval-after-load 'gnus-art
   (defhydra hydra-gnus-article (:color blue)
     "
 [_o_] Save attachment        [_F_] Forward
@@ -139,7 +139,7 @@
   (define-key gnus-article-mode-map "y" 'hydra-gnus-article/body))
 
 ;; message-mode
-(with-eval-after-load "message"
+(with-eval-after-load 'message
   (defhydra hydra-message (:color blue)
     "
 [_c_] Complete mail address [_H_] convert to html mail
@@ -163,7 +163,7 @@
 ;; }}
 
 ;; {{ dired
-(with-eval-after-load "dired"
+(with-eval-after-load 'dired
   (defun my-replace-dired-base (base)
     "Change file name in `wdired-mode'"
     (let* ((fp (dired-file-name-at-point))
@@ -237,10 +237,8 @@
 [_s1_] Fetch on subtitle    [_rb_] Change base
 [_+_] Create directory      [_dd_] Diff 2 files
 "
-    ("sa" (shell-command "periscope.py -l en *.mkv *.mp4 *.avi &"))
-    ("s1" (let* ((video-file (dired-file-name-at-point))
-                 (default-directory (file-name-directory video-file)))
-            (shell-command (format "periscope.py -l en %s &" (file-name-nondirectory video-file)))))
+    ("sa" (my-fetch-subtitles))
+    ("s1" (my-fetch-subtitles (dired-file-name-at-point)))
     ("pp" (my-copy-file-info 'file-truename))
     ("nn" (my-copy-file-info 'file-name-nondirectory))
     ("bb" (my-copy-file-info 'file-name-base))
