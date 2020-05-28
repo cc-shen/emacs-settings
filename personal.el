@@ -1,5 +1,7 @@
 ;; As suggested in the init.el
 ;;   any personal preferences should be elsewhere (i.e. here)
+(load "server")
+(unless (server-running-p) (server-start))
 
 (setq system-time-locale "C")
 
@@ -29,10 +31,6 @@
 
 (setq tags-revert-without-query t)
 (setq large-file-warning-threshold nil)
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (add-hook 'after-save-hook
-                      'counsel-etags-virtual-update-tags 'append 'local)))
 
 ;; lsp-mode settings
 (with-eval-after-load "lsp-mode"
@@ -68,23 +66,22 @@
 (defun setup-ffip-environment ()
   (interactive)
   (require 'find-file-in-project)
-  (setq-local ffip-patterns '(
-                              ;; Web
-                              "*.html"
-                              "*.js"
-                              "*.jsx"
-                              "*.css"
-                              "*.scss"
-                              ;; Other
-                              "*.java"
-                              "*.py"
-                              ;; Lisp Clojure
-                              "*.el"
-                              "*.clj"
-                              ;; Config/Document files
-                              "*.yaml"
-                              "*.json"
-                              "*.md"))
+  (setq ffip-patterns '(
+                        ;; Web
+                        "*.js"
+                        "*.jsx"
+                        "*.scss"
+                        ;; Other
+                        "*.java"
+                        "*.py"
+                        ;; Lisp Clojure
+                        "*.el"
+                        "*.clj"
+                        ;; Config/Document files
+                        "*.yaml"
+                        "*.json"
+                        "*.md"
+                        "*.org"))
   (add-to-list 'ffip-ignore-filenames "*.egg-info")
   (add-to-list 'ffip-ignore-filenames "*._*")
   (add-to-list 'ffip-prune-patterns "*/docker-venv")
