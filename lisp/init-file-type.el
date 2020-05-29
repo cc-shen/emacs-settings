@@ -1,3 +1,5 @@
+;; -*- coding: utf-8; lexical-binding: t; -*-
+
 ;;; {{ shell and conf
 (add-auto-mode 'conf-mode
                "\\.[^b][^a][a-zA-Z]*rc$"
@@ -124,5 +126,7 @@
 ;; python
 (add-interpreter-mode 'python-mode "python")
 
+;; roblox studio
+(add-auto-mode 'roblox-mode "\\.rbxlx\\'")
 ;; }}
 (provide 'init-file-type)

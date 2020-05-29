@@ -1,3 +1,5 @@
+;; -*- coding: utf-8; lexical-binding: t; -*-
+
 (defun flymake-html-init ()
   "Lint html."
   (let* ((temp-file (flymake-init-create-temp-buffer-copy
@@ -20,7 +22,7 @@
 (defun web-mode-hook-setup ()
   (unless (is-buffer-file-temp)
     (flymake-html-load)
-    (setq flyspell-check-doublon nil)
+    (setq my-flyspell-check-doublon nil)
     (remove-hook 'yas-after-exit-snippet-hook
                  'web-mode-yasnippet-exit-hook t)
     (remove-hook 'yas/after-exit-snippet-hook
