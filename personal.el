@@ -33,7 +33,7 @@
 (setq large-file-warning-threshold nil)
 
 ;; lsp-mode settings
-(with-eval-after-load "lsp-mode"
+(with-eval-after-load 'lsp-mode
   ;; enable log only for debug
   (setq lsp-log-io nil)
   ;; use `evil-matchit' instead
@@ -55,12 +55,13 @@
   (push "[/\\\\][^/\\\\]*\\.\\(json\\|html\\|jade\\)$" lsp-file-watch-ignored)
   ;; don't ping LSP lanaguage server too frequently
   (defvar lsp-on-touch-time 0)
-  (defadvice lsp-on-change (around lsp-on-change-hack activate)
-    ;; do run `lsp-on-change' too frequently
+  (defun my-lsp-on-change-hack (orig-fun &rest args)
+    ;; do NOT run `lsp-on-change' too frequently
     (when (> (- (float-time (current-time))
-                lsp-on-touch-time) 30) ;; 30 seconds
+                lsp-on-touch-time) 120) ;; 2 mins
       (setq lsp-on-touch-time (float-time (current-time)))
-      ad-do-it)))
+      (apply orig-fun args)))
+  (advice-add 'lsp-on-change :around #'my-lsp-on-change-hack))
 
 ;; ffip settings
 (defun setup-ffip-environment ()
@@ -90,11 +91,6 @@
   (add-to-list 'ffip-prune-patterns "*/.*_playground")
   (add-to-list 'ffip-prune-patterns "*/.mypy_cache"))
 (add-hook 'prog-mode-hook 'setup-ffip-environment)
-
-(require 'mouse)
-(xterm-mouse-mode t)
-(defun track-mouse (e))
-(setq mouse-sel-mode t)
 
 (electric-indent-mode -1)
 (workgroups-mode 1)
