@@ -92,5 +92,11 @@
   (add-to-list 'ffip-prune-patterns "*/.mypy_cache"))
 (add-hook 'prog-mode-hook 'setup-ffip-environment)
 
+(xterm-mouse-mode 1)
+;; OS X iTerm 2 fix for mouse scroll
+(unless window-system
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+
 (electric-indent-mode -1)
 (workgroups-mode 1)
