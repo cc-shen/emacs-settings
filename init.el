@@ -168,6 +168,7 @@
   ;; NO ELPA package is dependent on "site-lisp/".
   (setq load-path (cdr load-path))
   (my-add-subdirs-to-load-path (file-name-as-directory my-site-lisp-dir))
+  (require-init 'init-flymake t)
 
   (unless (my-vc-merge-p)
     (load (expand-file-name "~/.emacs.d/personal.el") t nil)
