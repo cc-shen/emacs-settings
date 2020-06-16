@@ -93,10 +93,13 @@
 (add-hook 'prog-mode-hook 'setup-ffip-environment)
 
 (unless window-system
-  (xterm-mouse-mode 1)
+  (require 'mwheel)
+  (require 'mouse)
+  (xterm-mouse-mode t)
+  (mouse-wheel-mode t)
   ;; OS X iTerm 2 fix for mouse scroll
-  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
-  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+  (global-set-key [mouse-4] 'next-line)
+  (global-set-key [mouse-5] 'previous-line))
 
 (electric-indent-mode -1)
 (workgroups-mode 1)
