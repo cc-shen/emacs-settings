@@ -301,7 +301,6 @@ You still need modify `package-archives' in \"init-elpa.el\" to PERMANENTLY use 
 (require-package 'web-mode)
 (require-package 'emms)
 (require-package 'iedit)
-(require-package 'bash-completion)
 (require-package 'websocket) ; for debug debugging of browsers
 (require-package 'jss)
 (require-package 'undo-tree)
@@ -389,6 +388,7 @@ You still need modify `package-archives' in \"init-elpa.el\" to PERMANENTLY use 
      espresso-theme
      exotica-theme
      eziam-theme
+     fantom-theme
      farmhouse-theme
      flatland-theme
      flatui-theme
@@ -457,6 +457,7 @@ You still need modify `package-archives' in \"init-elpa.el\" to PERMANENTLY use 
      twilight-theme
      ujelly-theme
      underwater-theme
+     vscode-dark-plus-theme
      white-sand-theme
      zen-and-art-theme
      zenburn-theme
