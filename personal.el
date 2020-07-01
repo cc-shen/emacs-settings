@@ -102,4 +102,3 @@
   (global-set-key [mouse-5] 'previous-line))
 
 (electric-indent-mode -1)
-(workgroups-mode 1)
