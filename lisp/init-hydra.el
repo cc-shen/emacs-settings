@@ -21,6 +21,7 @@
 [_bh_] Bash history
 [_hr_] Dired CMD history
 [_hh_] Random theme
+[_ii_] Imenu
 [_q_] Quit
 "
   ("hr" my-dired-redo-from-commands-history)
@@ -31,7 +32,9 @@
   ("bh" counsel-insert-bash-history)
   ("hh" random-healthy-color-theme)
   ("ss" wg-create-workgroup)
-  ("ll" my-wg-switch-workgroup)
+  ("ii" my-counsel-imenu)
+  ("ll" wg-open-workgroup)
+
   ("e" my-erase-visible-buffer)
   ("r" my-erase-current-buffer)
   ("E" toggle-typewriter)
