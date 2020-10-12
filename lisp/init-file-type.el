@@ -118,6 +118,7 @@
 
 (add-auto-mode 'typescript-mode "\\.ts$")
 
+(add-auto-mode 'lua-mode "\\.lua$")
 
 (add-auto-mode 'markdown-mode "\\.\\(m[k]d\\|markdown\\)\\'")
 
