@@ -1,8 +1,5 @@
 ;; As suggested in the init.el
 ;;   any personal preferences should be elsewhere (i.e. here)
-(load "server")
-(unless (server-running-p) (server-start))
-
 (setq system-time-locale "C")
 
 (setq create-lockfiles nil)
@@ -91,6 +88,9 @@
   (add-to-list 'ffip-prune-patterns "*/.*_playground")
   (add-to-list 'ffip-prune-patterns "*/.mypy_cache"))
 (add-hook 'prog-mode-hook 'setup-ffip-environment)
+
+;; Helps with easily view indented blocks
+(add-hook 'prog-mode-hook 'highlight-indentation-mode)
 
 (unless window-system
   (require 'mouse)
