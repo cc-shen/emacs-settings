@@ -64,9 +64,8 @@ network-security.data
 *.mp3
 *.mp4
 *.ogg
+cider-history
+.lsp-session-*
 nov-places
 transient/
 elpy/
-cider-history
-.vscode/
-.lsp-session-*
