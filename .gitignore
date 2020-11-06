@@ -69,3 +69,5 @@ cider-history
 nov-places
 transient/
 elpy/
+package-quickstart.el
+.lsp-session*
