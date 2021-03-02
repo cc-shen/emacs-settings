@@ -78,18 +78,18 @@
     (my-write-to-file str file)))
 
 ;; Handier way to add modes to auto-mode-alist
-(defun add-auto-mode (mode &rest patterns)
+(defun my-add-auto-mode (mode &rest patterns)
   "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
   (dolist (pattern patterns)
-    (add-to-list 'auto-mode-alist (cons pattern mode))))
+    (push (cons pattern mode) auto-mode-alist)))
 
-(defun add-interpreter-mode (mode &rest patterns)
+(defun my-add-interpreter-mode (mode &rest patterns)
   "Add entries to `interpreter-mode-alist' to use `MODE' for all given file `PATTERNS'."
   (dolist (pattern patterns)
-    (add-to-list 'interpreter-mode-alist (cons pattern mode))))
+    (push (cons pattern mode) interpreter-mode-alist )))
 
 (defun my-what-face (&optional position)
-  "Shows all faces at POSITION."
+  "Show all faces at POSITION."
   (let* ((face (get-text-property (or position (point)) 'face)))
     (unless (keywordp (car-safe face)) (list face))))
 
@@ -300,7 +300,7 @@ For example, you can '(setq my-mplayer-extra-opts \"-ao alsa -vo vdpau\")'.")
   (let* ((powershell-program (executable-find "powershell.exe")))
     (cond
      ;; Windows
-     ((fboundp 'w32-get-clipboard-data)
+     ((and *win64* (fboundp 'w32-get-clipboard-data))
       ;; `w32-set-clipboard-data' makes `w32-get-clipboard-data' always return null
       (w32-get-clipboard-data))
 
@@ -323,15 +323,16 @@ For example, you can '(setq my-mplayer-extra-opts \"-ao alsa -vo vdpau\")'.")
   (let* ((win64-clip-program (executable-find "clip.exe"))
          ssh-client)
     (cond
-     ;; Windows
-     ((fboundp 'w32-set-clipboard-data)
-      (w32-set-clipboard-data str-val))
-
-     ;; Windows 10
+     ;; Windows 10 or Windows 7
      ((and win64-clip-program)
       (with-temp-buffer
         (insert str-val)
         (call-process-region (point-min) (point-max) win64-clip-program)))
+
+     ;; Windows
+     ((and *win64* (fboundp 'w32-set-clipboard-data))
+      ;; Don't know why, but on Windows 7 this API does not work.
+      (w32-set-clipboard-data str-val))
 
      ;; If Emacs is inside an ssh session, place the clipboard content
      ;; into "~/.tmp-clipboard" and send it back into ssh client
@@ -354,7 +355,7 @@ For example, you can '(setq my-mplayer-extra-opts \"-ao alsa -vo vdpau\")'.")
       (xclip-set-selection 'clipboard str-val)))))
 ;; }}
 
-(defun should-use-minimum-resource ()
+(defun my-should-use-minimum-resource ()
   "Some files should use minimum resource (no syntax highlight, no line number display)."
   (and buffer-file-name
        (string-match-p "\.\\(mock\\|min\\|bundle\\)\.js" buffer-file-name)))
@@ -521,21 +522,37 @@ Copied from 3rd party package evil-textobj."
    (t
     (run-with-idle-timer seconds nil func))))
 
+(defun my-imenu-item-position (item)
+  "Handle some strange imenu ITEM."
+  (if (markerp item) (marker-position item) item))
+
 (defun my-get-closest-imenu-item (cands)
-  "Return closest imen item from CANDS."
+  "Return closest imenu item from CANDS."
   (let* ((pos (point))
          closest)
     (dolist (c cands)
       (let* ((item (cdr c))
              (m (cdr item)))
-        (when (and m (<= (marker-position m) pos))
+        (when (and m (<= (my-imenu-item-position m) pos))
           (cond
            ((not closest)
             (setq closest item))
-           ((< (- pos (marker-position m))
-               (- pos (marker-position (cdr closest))))
+           ((< (- pos (my-imenu-item-position m))
+               (- pos (my-imenu-item-position (cdr closest))))
             (setq closest item))))))
     closest))
+
+(defun my-setup-extra-keymap (extra-fn-list hint fn &rest args)
+  "Map EXTRA-FN-LIST to new keymap and show HINT after calling FN with ARGS."
+  (let ((echo-keystrokes nil))
+    (apply fn args)
+    (message hint)
+    (set-transient-map
+     (let ((map (make-sparse-keymap)))
+       (dolist (item extra-fn-list)
+         (define-key map (kbd (nth 0 item)) (nth 1 item)))
+       map)
+     t)))
 
 (provide 'init-utils)
 ;;; init-utils.el ends here

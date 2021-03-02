@@ -3,7 +3,7 @@
 ;; Without this comment emacs25 adds (package-initialize) here
 ;; (package-initialize)
 
-(let* ((minver "25.1"))
+(let* ((minver "26.1"))
   (when (version< emacs-version minver)
     (error "Emacs v%s or higher is required." minver)))
 
@@ -17,7 +17,6 @@
 (setq *cygwin* (eq system-type 'cygwin) )
 (setq *linux* (or (eq system-type 'gnu/linux) (eq system-type 'linux)) )
 (setq *unix* (or *linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)) )
-(setq *emacs26* (>= emacs-major-version 26))
 (setq *emacs27* (>= emacs-major-version 27))
 
 ;; don't GC during startup to save time
@@ -95,7 +94,6 @@
   (require-init 'init-ibuffer t)
   (require-init 'init-ivy)
   (require-init 'init-windows)
-  (require-init 'init-markdown t)
   (require-init 'init-javascript t)
   (require-init 'init-org t)
   (require-init 'init-css t)
@@ -105,7 +103,7 @@
   (require-init 'init-yasnippet t)
   (require-init 'init-cc-mode t)
   (require-init 'init-linum-mode)
-  (require-init 'init-git t)
+  (require-init 'init-git)
   (require-init 'init-gtags t)
   (require-init 'init-clipboard)
   (require-init 'init-ctags t)
@@ -174,6 +172,7 @@
   (garbage-collect))
 
 (run-with-idle-timer 4 nil #'my-cleanup-gc)
+
 
 ;;; Local Variables:
 ;;; no-byte-compile: t

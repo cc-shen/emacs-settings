@@ -1,4 +1,4 @@
-;;; counsel-etags.el ---  Fast and complete Ctags/Etags solution using ivy  -*- lexical-binding: t -*-
+;;; counsel-etags.el --- Fast and complete Ctags/Etags solution using ivy -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2018-2020 Chen Bin
 
@@ -24,23 +24,17 @@
 
 ;;; Commentary:
 
-;;  Setup:
+;;  Configuration,
+;;
 ;;   "Ctags" (Universal Ctags is recommended) should exist.
-;;   "GNU Find" is used if it's installed but it's optional.
 ;;   Or else, customize `counsel-etags-update-tags-backend' to generate tags file.
 ;;   Please note etags bundled with Emacs is not supported any more.
 ;;
-;; Usage:
+;; Usage,
 ;;
 ;;   `counsel-etags-find-tag-at-point' to navigate.  This command will also
-;;   run `counsel-etags-scan-code' AUTOMATICALLY if tags file is not built yet.
+;;   run `counsel-etags-scan-code' AUTOMATICALLY if tags file does not exist.
 ;;   It also calls `counsel-etags-fallback-grep-function' if not tag is found.
-;;
-;;   Run `counsel-etags-list-tag-in-current-file' to list tags in current file.
-;;
-;;   Or just use native imenu with below setup,
-;;      (setq imenu-create-index-function
-;;            'counsel-etags-imenu-default-create-index-function)
 ;;
 ;;   Use `counsel-etags-imenu-excluded-names' to exclude tags by name.
 ;;   Use `counsel-etags-imenu-excluded-types' to exclude tags by type
@@ -57,8 +51,14 @@
 ;;   (".gitignore", ".hgignore", etc).  Path is either absolute or relative to the tags file.
 ;;   `counsel-etags-universal-ctags-p' to detect if Universal Ctags is used.
 ;;   `counsel-etags-exuberant-ctags-p' to detect if Exuberant Ctags is used.
+;;   See documentation of `counsel-etags-use-ripgrep-force' on using ripgrep.
+;;   If it's not set, correct grep program is autmatically detected.
 ;;
-;; Tips:
+;; Tips,
+;; - The grep program path on Native Windows Emacs uses either forward slash or
+;;   backward slash.  Like "C:/rg.exe" or "C:\\\\rg.exe".
+;;   If grep program path is added to environment variable PATH, you don't need
+;;   worry about slash problem.
 ;;
 ;; - Add below code into "~/.emacs" to AUTOMATICALLY update tags file:
 ;;
@@ -80,7 +80,7 @@
 ;;     (setq counsel-etags-extra-tags-files
 ;;           '("./TAGS" "/usr/include/TAGS" "$PROJ1/include/TAGS"))
 ;;
-;;   Files in `counsel-etags-extra-tags-files' have only symbol with absolute path.
+;;   Files in `counsel-etags-extra-tags-files' should have symbols with absolute path only.
 ;;
 ;; - You can set up `counsel-etags-ignore-directories' and `counsel-etags-ignore-filenames',
 ;;   (with-eval-after-load 'counsel-etags
@@ -94,6 +94,7 @@
 ;;  - Rust programming language is supported.
 ;;    The easiest setup is to use ".dir-locals.el".
 ;;   in root directory.  The content of .dir-locals.el" is as below,
+;;
 ;;   ((nil . ((counsel-etags-update-tags-backend . (lambda (src-dir) (shell-command "rusty-tags Emacs")))
 ;;            (counsel-etags-tags-file-name . "rusty-tags.emacs"))))
 ;;
@@ -110,19 +111,19 @@
 ;;  - `counsel-etags-find-tag-name-function' finds tag name at point.  If it returns nil,
 ;;    `find-tag-default' is used.  `counsel-etags-word-at-point' gets word at point.
 ;;
-;;  - User could append the extra content into tags file in `counsel-etags-after-update-tags-hook'.
+;;  - You can append extra content into tags file in `counsel-etags-after-update-tags-hook'.
 ;;    The parameter of hook is full path of the tags file.
-;;    `counsel-etags-tag-line' and `counsel-etags-append-to-tags-file' are helper functions to
-;;    update tags file in the hook.
+;;    `counsel-etags-tag-line' and `counsel-etags-append-to-tags-file' are helper functions
+;;    to update tags file in the hook.
 ;;
 ;;  - The ignore files (.gitignore, etc) are automatically detected and append to ctags
 ;;    cli options as "--exclude="@/ignore/file/path".
 ;;    Set `counsel-etags-ignore-config-files' to nil to turn off this feature.
 ;;
-;;  - If base configuration file  "~/.ctags.exuberant" exists, it's used to
+;;  - If base configuration file "~/.ctags.exuberant" exists, it's used to
 ;;    generate "~/.ctags" automatically.
-;;    "~/.ctags.exuberant" is in Exuberant Ctags format, but the "~/.ctags" is
-;;    in Universal Ctags format if Universal Ctags is used.
+;;    "~/.ctags.exuberant" is Exuberant Ctags format, but the "~/.ctags" could be
+;;    Universal Ctags format if Universal Ctags is used.
 ;;    You can customize `counsel-etags-ctags-options-base' to change the path of
 ;;    base configuration file.
 
@@ -130,6 +131,11 @@
 ;;    The sorting happens in Emacs 27+.
 ;;    You can set `counsel-etags-sort-grep-result-p' to nil to disable sorting.
 
+;;  - Run `counsel-etags-list-tag-in-current-file' to list tags in current file.
+;;    You can also use native imenu with below setup,
+;;      (setq imenu-create-index-function
+;;            'counsel-etags-imenu-default-create-index-function)
+;;
 ;; See https://github.com/redguardtoo/counsel-etags/ for more tips.
 
 ;;; Code:
@@ -192,6 +198,16 @@ A CLI to create tags file:
 (defcustom counsel-etags-use-ripgrep-force nil
   "Force use ripgrep as grep program.
 If rg is not in $PATH, then it should be defined in `counsel-etags-grep-program'."
+  :group 'counsel-etags
+  :type 'boolean)
+
+(defcustom counsel-etags-ripgrep-default-options
+  ;; @see https://github.com/BurntSushi/ripgrep/issues/501
+  ;; some shell will expand "/" to a complete file path.
+  ;; so try to avoid "/" in shell
+  (format "-n -M 1024 --no-heading --color never -s %s"
+          (if (eq system-type 'windows-nt) "--path-separator \"\x2f\"" ""))
+  "Default options passed to ripgrep command line program."
   :group 'counsel-etags
   :type 'boolean)
 
@@ -525,11 +541,7 @@ Return nil if it's not found."
         (counsel-etags-win-path executable-name "f")
         (counsel-etags-win-path executable-name "g")
         (counsel-etags-win-path executable-name "h")
-        ;; There is "find.exe" in Windows which could be wrongly
-        ;; used as GNU/BSD Find. So don't use "find" at all
-        ;; in this case.
-        (unless (string-match "find" executable-name)
-          executable-name)))
+        executable-name))
    (t
     (if (executable-find executable-name) (executable-find executable-name)))))
 
@@ -1227,6 +1239,8 @@ Focus on TAGNAME if it's not nil."
   (let* ((tags-file (counsel-etags-locate-tags-file))
          src-dir)
     (when (and (not tags-file)
+               ;; No need to hint after user set `counsel-etags-extra-tags-files'
+               (not counsel-etags-extra-tags-files)
                (not counsel-etags-can-skip-project-root))
       (setq src-dir (read-directory-name "Ctags will scan code at:"
                                          (counsel-etags-locate-project)))
@@ -1346,7 +1360,7 @@ Tags might be sorted by comparing tag's path with CURRENT-FILE."
                current-file))
     ;; Dir could be nil. User could use `counsel-etags-extra-tags-files' instead
     (cond
-     ((not dir)
+     ((and (not dir) (not counsel-etags-extra-tags-files))
       (message "Tags file is not ready yet."))
      ((not tagname)
       ;; OK, need use ivy-read to find candidate
@@ -1481,7 +1495,7 @@ That's the known issue of Emacs Lisp.  The program itself is perfectly fine."
   (let* ((tagname (counsel-etags-tagname-at-point)))
     (cond
      (tagname
-        (counsel-etags-find-tag-api tagname nil buffer-file-name))
+      (counsel-etags-find-tag-api tagname nil buffer-file-name))
      (t
       (message "No tag at point")))))
 
@@ -1524,20 +1538,23 @@ The tags updating might not happen."
                (string-match-p (file-name-directory (file-truename tags-file))
                                (file-truename dir)))
       (cond
-       ((not counsel-etags-timer)
+       ((or (not counsel-etags-timer)
+            (> (- (float-time (current-time)) (float-time counsel-etags-timer))
+               counsel-etags-update-interval))
+
         ;; start timer if not started yet
-        (setq counsel-etags-timer (current-time)))
-
-       ((< (- (float-time (current-time)) (float-time counsel-etags-timer))
-           counsel-etags-update-interval)
-        ;; do nothing, can't run ctags too often
-        )
-
-       (t
         (setq counsel-etags-timer (current-time))
+
+        ;; start updating
+        (if counsel-etags-debug (message "counsel-etags-virtual-update-tags actually happened."))
+
         (let* ((dir (file-name-directory (file-truename (counsel-etags-locate-tags-file)))))
           (if counsel-etags-debug (message "update tags in %s" dir))
-          (funcall counsel-etags-update-tags-backend dir)))))))
+          (funcall counsel-etags-update-tags-backend dir)))
+
+       (t
+        ;; do nothing, can't run ctags too often
+        (if counsel-etags-debug (message "counsel-etags-virtual-update-tags is actually skipped.")))))))
 
 (defun counsel-etags-unquote-regex-parens (str)
   "Unquote regexp parentheses in STR."
@@ -1581,6 +1598,11 @@ If SYMBOL-AT-POINT is nil, don't read symbol at point."
   "Test if ripgrep program exist."
   (or counsel-etags-use-ripgrep-force (executable-find "rg")))
 
+(defun counsel-etags-shell-quote (argument)
+  "Quote ARGUMENT."
+  (if (eq system-type 'windows-nt) argument
+    (shell-quote-argument argument)))
+
 (defun counsel-etags-exclude-opts (use-cache)
   "Grep CLI options.  IF USE-CACHE is t, the options is read from cache."
   (let* ((ignore-dirs (if use-cache (plist-get counsel-etags-opts-cache :ignore-dirs)
@@ -1591,19 +1613,19 @@ If SYMBOL-AT-POINT is nil, don't read symbol at point."
     (cond
      ((counsel-etags-has-quick-grep-p)
       (concat (mapconcat (lambda (e)
-                           (format "-g=\"!%s/*\"" (shell-quote-argument e)))
+                           (format "-g=\"!%s/*\"" (counsel-etags-shell-quote e)))
                          ignore-dirs " ")
               " "
               (mapconcat (lambda (e)
-                           (format "-g=\"!%s\"" (shell-quote-argument e)))
+                           (format "-g=\"!%s\"" (counsel-etags-shell-quote e)))
                          ignore-file-names " ")))
      (t
       (concat (mapconcat (lambda (e)
-                           (format "--exclude-dir=\"%s\"" (shell-quote-argument e)))
+                           (format "--exclude-dir=\"%s\"" (counsel-etags-shell-quote e)))
                          ignore-dirs " ")
               " "
               (mapconcat (lambda (e)
-                           (format "--exclude=\"%s\"" (shell-quote-argument e)))
+                           (format "--exclude=\"%s\"" (counsel-etags-shell-quote e)))
                          ignore-file-names " "))))))
 
 (defun counsel-etags-grep-cli (keyword use-cache)
@@ -1613,17 +1635,17 @@ Extended regex is used, like (pattern1|pattern2)."
    ((counsel-etags-has-quick-grep-p)
     ;; "--hidden" force ripgrep to search hidden files/directories, that's default
     ;; behavior of grep
-    (format "%s %s %s --hidden %s \"%s\" --"
+    (format "\"%s\" %s %s --hidden %s \"%s\" --"
             ;; if rg is not in $PATH, then it's in `counsel-etags-grep-program'
             (or (executable-find "rg") counsel-etags-grep-program)
             ;; (if counsel-etags-debug " --debug")
-            "-n -M 1024 --no-heading --color never -s --path-separator /"
+            counsel-etags-ripgrep-default-options
             counsel-etags-grep-extra-arguments
             (counsel-etags-exclude-opts use-cache)
             keyword))
    (t
     ;; use extended regex always
-    (format "%s -rsnE %s %s \"%s\" *"
+    (format "\"%s\" -rsnE %s %s \"%s\" *"
             (or counsel-etags-grep-program (counsel-etags-guess-program "grep"))
             counsel-etags-grep-extra-arguments
             (counsel-etags-exclude-opts use-cache)
@@ -1656,7 +1678,8 @@ If SHOW-KEYWORD-P is t, show the keyword in the minibuffer."
                   (counsel-etags-read-keyword "Regular expression for grep: ")))
          (keyword (funcall counsel-etags-convert-grep-keyword text))
          (default-directory (file-truename (or root
-                                               (counsel-etags-locate-project))))
+                                               (counsel-etags-locate-project)
+                                               default-directory)))
          (time (current-time))
          (cmd (counsel-etags-grep-cli keyword nil))
          (cands (split-string (shell-command-to-string cmd) "[\r\n]+" t))
